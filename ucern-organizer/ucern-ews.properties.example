@@ -1,0 +1,30 @@
+ucern.ews.user=username
+ucern.ews.password=password
+ucern.ews.domain=microsoft_domain_name
+#Defaults to `ucern.ews.user`@Cerner.com
+ucern.ews.mailbox=my.name@domain.com
+#Default set below. Defines Exchange connection version. Other options are Exchange2010 and Exchange2007_SP1
+ucern.ews.version=Exchange2010_SP1
+#Default is unset. Defines the location of Exchange Web Services in case auto discovery based on the mailbox fails
+#There are other properties that define this in a piecemeal fashion as well. 
+#ucern.ews.uri  
+
+#Default set below. Defines the starting point for navigating the account. 
+#Inbox is another option. 
+#See microsoft.exchange.webservices.data.WellKnownFolderName for all options.
+ucern.ews.start=MsgFolderRoot
+#Default set below. Json defining the Path from the start to the uCern folder above
+ucern.ews.folderJson=["uCern"]
+
+#Default set below. Defines the sender to look for
+ucern.ews.from=admin@ucern.com
+
+#Default set below. Defines the number of days to keep notifications. 
+#Set to 0 to disable
+#Any item in the set folder received before this many days ago will be deleted
+#Any folder that winds up empty would be removed
+ucern.ews.purgeDays=7
+
+#Default set below. Defines how to remove notifications to be purged
+#HardDelete or SoftDelete are other options
+ucern.ews.deleteMode=MoveToDeletedItems
