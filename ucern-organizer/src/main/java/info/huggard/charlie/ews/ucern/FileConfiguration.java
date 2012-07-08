@@ -83,7 +83,7 @@ public class FileConfiguration implements Configuration {
         }
         final String host = host();
         if (host != null) {
-            return URI.create(prot() + "://" + host + port() + "/" + path());
+            return URI.create(prot() + "://" + host + ":" + port() + "/" + path());
         }
         return null;
     }
