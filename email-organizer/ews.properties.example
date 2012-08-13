@@ -1,0 +1,39 @@
+# No variable substitutions actually happen, the pseudo-substitutions are for explanation only.
+connection.user=username
+connection.password=password
+connection.domain=domain_name
+#If ${connection.uri} is specified, then it is used. Otherwise if ${connection.host} is specified, then the default under ${connection.uri} is assembled and used. 
+#Otherwise the uri is discovered based upon ${connection.mailbox}
+#connection.mailbox=${default.mailbox}
+#connection.uri=${connection.protocol}://${connection.host}:${connection.port}/${connection.path}
+#connection.protocol=https
+#connection.host
+#connection.port=443
+#connection.path=EWS/Exchange.asmx
+
+#default.mailbox=${connection.user}@Cerner.com
+#default.folderParent=MsgFolderRoot
+#default.deleteMode=MoveToDeletedItems
+#default.path=[]
+
+section.uCern.path=["uCern"]
+section.uCern.purgeDays=7
+section.uCern.subjectPattern=\\s*(?:Re:)?\\s*\\[(.+?)\\] .*|- project "(.*)" created
+
+#Defines the order of tasks to be performed
+methods=uCernSort,uCernPurge
+
+method.uCernUnsort.class=info.huggard.charlie.ews.method.UnsortEmails
+method.uCernUnsort.sharedConfig=uCern
+
+method.uCernSort.class=info.huggard.charlie.ews.method.SortEmails
+method.uCernSort.sharedConfig=uCern
+
+method.uCernPurge.class=info.huggard.charlie.ews.method.PurgeItems
+method.uCernPurge.sharedConfig=uCern
+#method.uCernPurge.subfolders=true
+#method.uCernPurge.purgeDays=7
+
+method.teamInviteAccept.class=
+method.teamInviteAccept.mailbox=iAwareDev@Cerner.com
+method.teamInviteAccept.folderParent=Inbox
