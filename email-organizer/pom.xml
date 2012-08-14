@@ -41,6 +41,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>13.0</version>
+        </dependency>
+        <dependency>
             <!-- Retrieved from http://archive.msdn.microsoft.com/ewsjavaapi/Release/ProjectReleases.aspx?ReleaseId=5754 -->
             <groupId>com.microsoft.ews</groupId>
             <artifactId>ews-api</artifactId>

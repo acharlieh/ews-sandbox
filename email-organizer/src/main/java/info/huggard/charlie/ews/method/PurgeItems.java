@@ -3,21 +3,27 @@ package info.huggard.charlie.ews.method;
 import info.huggard.charlie.ews.CleanupMethod;
 import info.huggard.charlie.ews.Configuration.Section;
 import info.huggard.charlie.ews.util.EWSUtil;
+import info.huggard.charlie.ews.util.ItemToItemId;
 
 import java.util.Date;
 
+import microsoft.exchange.webservices.data.AffectedTaskOccurrence;
 import microsoft.exchange.webservices.data.DeleteMode;
 import microsoft.exchange.webservices.data.FindFoldersResults;
 import microsoft.exchange.webservices.data.FindItemsResults;
 import microsoft.exchange.webservices.data.Folder;
 import microsoft.exchange.webservices.data.FolderView;
 import microsoft.exchange.webservices.data.Item;
+import microsoft.exchange.webservices.data.ItemId;
 import microsoft.exchange.webservices.data.ItemSchema;
 import microsoft.exchange.webservices.data.ItemView;
 import microsoft.exchange.webservices.data.SearchFilter;
+import microsoft.exchange.webservices.data.SendCancellationsMode;
 
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
+
+import com.google.common.collect.Iterables;
 
 /**
  * Deletes items that are older than a set number of days.
@@ -99,10 +105,12 @@ public class PurgeItems implements CleanupMethod {
     }
 
     private boolean deleteItems(final Folder folder, final SearchFilter filter) throws Exception {
-        final ItemView view = new ItemView(50);
+        final ItemView view = new ItemView(500);
         final FindItemsResults<Item> items = folder.findItems(filter, view);
-        for (final Item item : items) {
-            item.delete(deleteMode);
+        if (items.getTotalCount() > 0) {
+            final Iterable<ItemId> itemIds = Iterables.transform(items, ItemToItemId.INSTANCE);
+            folder.getService().deleteItems(itemIds, deleteMode, SendCancellationsMode.SendToNone,
+                    AffectedTaskOccurrence.SpecifiedOccurrenceOnly);
         }
         return items.isMoreAvailable();
     }

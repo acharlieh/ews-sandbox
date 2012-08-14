@@ -1,39 +1,60 @@
 # No variable substitutions actually happen, the pseudo-substitutions are for explanation only.
-connection.user=username
-connection.password=password
-connection.domain=domain_name
+connection.user=
+connection.password=
+connection.domain=
+
 #If ${connection.uri} is specified, then it is used. Otherwise if ${connection.host} is specified, then the default under ${connection.uri} is assembled and used. 
 #Otherwise the uri is discovered based upon ${connection.mailbox}
 #connection.mailbox=${default.mailbox}
 #connection.uri=${connection.protocol}://${connection.host}:${connection.port}/${connection.path}
 #connection.protocol=https
-#connection.host
+#connection.host=
 #connection.port=443
 #connection.path=EWS/Exchange.asmx
 
+#Defines the order of tasks to be performed, Configuration for each is below.
+methods=uCernSort,uCernPurge,cronSort,cronPurge,cruSort,cruPurge
+
+#Defaults are the last thing resolved prior to falling back to class specific defaults or being unset. 
+#The commented lines are defaults provided programmatically which can be overridden by uncommenting the line and changing the default
 #default.mailbox=${connection.user}@Cerner.com
 #default.folderParent=MsgFolderRoot
 #default.deleteMode=MoveToDeletedItems
 #default.path=[]
 
+##Sections are named groups of shared configuration. 
+##Each section can be pulled into a method config via a sharedConfig entry. 
+##SharedConfig entries are referenced in the order in which they are defined in the method.
+
 section.uCern.path=["uCern"]
 section.uCern.purgeDays=7
+section.uCern.subfolders=true
 section.uCern.subjectPattern=\\s*(?:Re:)?\\s*\\[(.+?)\\] .*|- project "(.*)" created
 
-#Defines the order of tasks to be performed
-methods=uCernSort,uCernPurge
+section.dls.subfolders=true
+section.dls.deleteMode=HardDelete
+section.dls.folderParent=Inbox
 
-method.uCernUnsort.class=info.huggard.charlie.ews.method.UnsortEmails
-method.uCernUnsort.sharedConfig=uCern
+section.cron.purgeDays=1
+section.cron.path=["DLs","Cron"]
+section.cron.subjectPattern=Cron <.*@(.+?)>.*|Logwatch for (\\w+)\\s.*
 
-method.uCernSort.class=info.huggard.charlie.ews.method.SortEmails
-method.uCernSort.sharedConfig=uCern
+section.cru.purgeDays=3
+section.cru.path=["DLs","Crucible"]
+section.cru.subjectPattern=\\[Crucible\\].*\\((?:GENESIS-(.+?)|(.+?))\\).*
 
-method.uCernPurge.class=info.huggard.charlie.ews.method.PurgeItems
-method.uCernPurge.sharedConfig=uCern
-#method.uCernPurge.subfolders=true
-#method.uCernPurge.purgeDays=7
+section.sort.class=info.huggard.charlie.ews.method.SortEmails
+section.unsort.class=info.huggard.charlie.ews.method.UnsortEmails
+section.purge.class=info.huggard.charlie.ews.method.PurgeItems
 
-method.teamInviteAccept.class=
-method.teamInviteAccept.mailbox=iAwareDev@Cerner.com
-method.teamInviteAccept.folderParent=Inbox
+##Method Configuration. 
+##Each set of configuration is local to a specific execution of the given class
+##For a given cleanup method execution, configuration keys are attempted to be resolved here first, then the shared config (inorder), 
+##     then the default config, followed by any class specific defaults.
+method.uCernUnsort.sharedConfig=unsort,uCern
+method.uCernSort.sharedConfig=sort,uCern
+method.uCernPurge.sharedConfig=purge,uCern
+method.cronSort.sharedConfig=sort,cron,dls
+method.cronPurge.sharedConfig=purge,cron,dls
+method.cruSort.sharedConfig=sort,cru,dls
+method.cruPurge.sharedConfig=purge,cru,dls
