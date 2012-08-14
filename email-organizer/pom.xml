@@ -99,7 +99,7 @@
                         <configuration>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>info.huggard.charlie.ews.ucern.UCernOrganizer</mainClass>
+                                    <mainClass>info.huggard.charlie.ews.EmailCleanup</mainClass>
                                 </transformer>
                             </transformers>
                             <shadedArtifactAttached>true</shadedArtifactAttached>
