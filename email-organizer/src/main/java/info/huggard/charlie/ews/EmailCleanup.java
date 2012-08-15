@@ -7,6 +7,7 @@ import info.huggard.charlie.ews.util.EWSUtil;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import microsoft.exchange.webservices.data.ExchangeService;
@@ -29,7 +30,9 @@ public class EmailCleanup {
 
         final ExchangeService service = getService(config.getConnectionSettings());
         final EWSUtil serviceUtil = new EWSUtil(service);
-        for (final CleanupMethod method : getCleanupMethods(config.getCleanupMethodSettings())) {
+        final List<Section> sections = config.getCleanupMethodSettings();
+        for (final CleanupMethod method : getCleanupMethods(sections)) {
+            System.out.printf("%s - Executing Class: %s\n", new Date(), method.getClass().getCanonicalName());
             method.execute(serviceUtil);
         }
 

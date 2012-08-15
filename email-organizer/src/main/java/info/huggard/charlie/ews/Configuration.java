@@ -12,13 +12,13 @@ public interface Configuration {
 
     List<Section> getCleanupMethodSettings();
 
-    interface Section extends Values {
+    public interface Section extends Values {
         Values getDefaults();
 
         void setDefaults(Values defaults);
     }
 
-    interface Values {
+    public interface Values {
         String getValue(String key);
 
         List<String> getList(String key);
