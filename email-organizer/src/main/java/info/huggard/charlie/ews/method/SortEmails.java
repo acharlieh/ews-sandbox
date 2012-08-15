@@ -8,12 +8,15 @@ import java.util.Collections;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import microsoft.exchange.webservices.data.BasePropertySet;
 import microsoft.exchange.webservices.data.DeleteMode;
 import microsoft.exchange.webservices.data.EmailMessageSchema;
 import microsoft.exchange.webservices.data.FindItemsResults;
 import microsoft.exchange.webservices.data.Folder;
 import microsoft.exchange.webservices.data.Item;
+import microsoft.exchange.webservices.data.ItemSchema;
 import microsoft.exchange.webservices.data.ItemView;
+import microsoft.exchange.webservices.data.PropertySet;
 import microsoft.exchange.webservices.data.SearchFilter;
 
 /**
@@ -56,6 +59,7 @@ public class SortEmails implements CleanupMethod {
     private boolean sort(final EWSUtil util, final Folder folder, final SearchFilter filter,
             final Pattern subjectPattern) throws Exception {
         final ItemView view = new ItemView(50);
+        view.setPropertySet(new PropertySet(BasePropertySet.IdOnly, ItemSchema.Subject));
         final FindItemsResults<Item> items = folder.findItems(filter, view);
         for (final Item item : items) {
             final String subject = item.getSubject();

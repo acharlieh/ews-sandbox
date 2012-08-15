@@ -11,6 +11,7 @@ import microsoft.exchange.webservices.data.Folder;
 import microsoft.exchange.webservices.data.FolderView;
 import microsoft.exchange.webservices.data.Item;
 import microsoft.exchange.webservices.data.ItemView;
+import microsoft.exchange.webservices.data.PropertySet;
 
 import com.google.common.collect.Iterables;
 
@@ -42,6 +43,7 @@ public class UnsortEmails implements CleanupMethod {
             return;
         }
         final FolderView view = new FolderView(num);
+        view.setPropertySet(PropertySet.IdOnly);
         final FindFoldersResults results = folder.findFolders(view);
 
         for (final Folder child : results) {
@@ -54,6 +56,7 @@ public class UnsortEmails implements CleanupMethod {
 
     private boolean unsort(final Folder parent, final Folder child) throws Exception {
         final ItemView view = new ItemView(500);
+        view.setPropertySet(PropertySet.IdOnly);
         final FindItemsResults<Item> items = child.findItems(view);
         if (items.getTotalCount() > 0) {
             child.getService().moveItems(Iterables.transform(items, ItemToItemId.INSTANCE), parent.getId());

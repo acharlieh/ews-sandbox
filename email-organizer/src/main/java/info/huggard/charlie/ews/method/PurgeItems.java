@@ -17,6 +17,7 @@ import microsoft.exchange.webservices.data.Item;
 import microsoft.exchange.webservices.data.ItemId;
 import microsoft.exchange.webservices.data.ItemSchema;
 import microsoft.exchange.webservices.data.ItemView;
+import microsoft.exchange.webservices.data.PropertySet;
 import microsoft.exchange.webservices.data.SearchFilter;
 import microsoft.exchange.webservices.data.SendCancellationsMode;
 
@@ -106,6 +107,7 @@ public class PurgeItems implements CleanupMethod {
 
     private boolean deleteItems(final Folder folder, final SearchFilter filter) throws Exception {
         final ItemView view = new ItemView(500);
+        view.setPropertySet(PropertySet.IdOnly);
         final FindItemsResults<Item> items = folder.findItems(filter, view);
         if (items.getTotalCount() > 0) {
             final Iterable<ItemId> itemIds = Iterables.transform(items, ItemToItemId.INSTANCE);
