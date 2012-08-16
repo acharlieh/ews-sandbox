@@ -13,7 +13,9 @@ connection.domain=
 #connection.path=EWS/Exchange.asmx
 
 #Defines the order of tasks to be performed, Configuration for each is below.
-methods=uCernSort,uCernPurge,cronSort,cronPurge,cruSort,cruPurge
+methods=uCernSort,uCernPurge
+#Other defined methods: 
+#uCernUnsort,cronSort,cronPurge,cruSort,cruPurge,acceptRequests
 
 #Defaults are the last thing resolved prior to falling back to class specific defaults or being unset. 
 #The commented lines are defaults provided programmatically which can be overridden by uncommenting the line and changing the default
@@ -58,3 +60,8 @@ method.cronSort.sharedConfig=sort,cron,dls
 method.cronPurge.sharedConfig=purge,cron,dls
 method.cruSort.sharedConfig=sort,cru,dls
 method.cruPurge.sharedConfig=purge,cru,dls
+
+method.acceptRequests.class=info.huggard.charlie.ews.method.AcceptRequests
+method.acceptRequests.folderParent=Inbox
+method.acceptRequests.mailbox=MyResourceMailbox@Example.com
+
