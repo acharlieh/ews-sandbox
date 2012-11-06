@@ -13,7 +13,7 @@ import java.util.TimeZone;
 
 import microsoft.exchange.webservices.data.ExchangeService;
 import microsoft.exchange.webservices.data.ExchangeVersion;
-import microsoft.exchange.webservices.data.TrustingWebCredentials;
+import microsoft.exchange.webservices.data.WebCredentials;
 
 /**
  * Main method for invoking email cleanup methods.
