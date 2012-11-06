@@ -11,7 +11,7 @@ import java.util.Map;
  * Abstract class to add simple defaults before another defaults class.
  * @author Charlie Huggard
  */
-public abstract class AdditionalDefaults implements Values {
+public class AdditionalDefaults implements Values {
 
     public AdditionalDefaults(final Values defaults, final Map<String, String> values,
             final Map<String, List<String>> lists) {

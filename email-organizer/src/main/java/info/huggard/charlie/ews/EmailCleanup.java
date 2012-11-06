@@ -9,10 +9,11 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import microsoft.exchange.webservices.data.ExchangeService;
 import microsoft.exchange.webservices.data.ExchangeVersion;
-import microsoft.exchange.webservices.data.WebCredentials;
+import microsoft.exchange.webservices.data.TrustingWebCredentials;
 
 /**
  * Main method for invoking email cleanup methods.
@@ -27,7 +28,7 @@ public class EmailCleanup {
 
     public static void main(final String... args) throws Exception {
         final Configuration config = new PropertiesFileConfig(getFileName(args));
-
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC")); // Solve a bug handling date time stamps.
         final ExchangeService service = getService(config.getConnectionSettings());
         final EWSUtil serviceUtil = new EWSUtil(service);
         final List<Section> sections = config.getCleanupMethodSettings();
